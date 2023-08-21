@@ -1,16 +1,58 @@
-# weather
+### Приложение для получения погоды по текущей геолокации пользователя
 
-A new Flutter project.
+## Функционал и выполненные требования
+* При инициализации приложения показывается splash-экран, а затем экран авторизации. 
+* Авторизация реализована с помощью Firebase SDK. 
+* Обработаны ошибки,которые могут возникнуть при авторизации Firebase.
+```
+  String _handleFirebaseError(String code) {
+    return switch (code) {
+      "invalid-email" =>'Данный email не валиден',
+      "email-already-in-use" => 'Данный email уже используется',
+      "user-disabled" => 'Пользователь заблокирован',
+      "wrong-password" => 'Неверный пароль',
+      "operation-not-allowed" =>
+      "Ошибка сервера, пожалуйста, повторите попытку позже",
+      "network-request-failed" => "Нет подключения к интернету",
+      _ =>'Ошибка входа. Пожалуйста, попробуйте снова.'
+    };
+  }
+```
+* При авторизации происходит хэширование пароля с помощью библиотеку crypto. Пароль должен быть сложным (содержать не менее 8 символов, не менее одной цифры, прописной и строчной буквы)
+* После успешной авторизации пользователь попадает на экран с погодой для текущей геолокации.
+* При наличии ранее подгруженный данных, приложение работает оффлайн
+* Реализована обработка ошибок, которые могут возникнуть при получении погоды
 
-## Getting Started
+```
+  void _handleResponse(Response response) {
+    final code = response.statusCode;
+    return switch (code) {
+      401 => throw Unauthorized(),
+      404 => throw NotFound(),
+      429 => throw TooManyRequests(),
+      500 => throw ServerError(),
+      _ => null,
+    };
+  }
+```
+* Интерфейс приложения полностью соответствует дизайну
+* Логика экранов реализована с помощью Bloc
 
-This project is a starting point for a Flutter application.
+## Демонстрация работы
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Использованный стек
+* flutter_bloc
+* crypto
+* firebase_auth
+* geolocator
+* translator
+* dio
+* hive
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Примечание
+Приложение было протестировано только под android
+
+## APK
+
+[скачать apk](https://github.com/Evgenia-bit/weather_with_auth/blob/main/app-release.apk)

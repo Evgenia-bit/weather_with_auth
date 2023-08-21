@@ -14,7 +14,8 @@ class LocationMapper {
   }
 
   Future<String> _getCity(String city) async {
-    return await Translator.translateText(city);
+
+      return await Translator.translateText(city);
   }
 
   String _getCountry(String code) {

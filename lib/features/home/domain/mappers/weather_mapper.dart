@@ -52,6 +52,7 @@ class WeatherMapper {
 
   Future<String> _getDate(DateTime dateTime) async {
     final englishDate = DateFormat("MMMM d").format(dateTime);
+
     return await Translator.translateText(englishDate);
   }
 

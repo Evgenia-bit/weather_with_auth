@@ -55,19 +55,13 @@ class WeatherRemoteDataSource extends AbstractWeatherDataSource {
 
   void _handleResponse(Response response) {
     final code = response.statusCode;
-    if (code == null) return;
-    if (code == 401) {
-      throw Unauthorized();
-    }
-    if (code == 404) {
-      throw NotFound();
-    }
-    if (code == 429) {
-      throw TooManyRequests();
-    }
-    if (code >= 500) {
-      throw ServerError();
-    }
+    return switch (code) {
+      401 => throw Unauthorized(),
+      404 => throw NotFound(),
+      429 => throw TooManyRequests(),
+      500 => throw ServerError(),
+      _ => null,
+    };
   }
 }
 

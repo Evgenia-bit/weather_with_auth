@@ -26,7 +26,7 @@ class WeatherBloc extends Cubit<WeatherState> {
 
     } on WeatherException catch (e) {
       emit(state.copyWith(errorMessage: e.message));
-    } catch (e) {
+    } catch (e, st) {
       if (e is DioException && e.error is SocketException) {
         emit(state.copyWith(
           errorMessage: 'Отсутствует подключение к интернету',
